@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convertisseur de Mesures</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        select, input, button {
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Convertisseur de Mesures</h1>
+    
+    <label for="categorie">Choisir la catégorie :</label>
+    <select id="categorie" onchange="changerUnites()">
+        <option value="distance">Distance</option>
+        <option value="poids">Poids</option>
+        <option value="volume">Volume</option>
+    </select>
+    
+    <div id="conversion">
+        <label for="valeur">Valeur :</label>
+        <input type="number" id="valeur" placeholder="Entrez une valeur" />
+        
+        <label for="uniteSource">Unité source :</label>
+        <select id="uniteSource"></select>
+
+        <label for="uniteCible">Convertir en :</label>
+        <select id="uniteCible"></select>
+
+        <button onclick="convertir()">Convertir</button>
+    </div>
+    
+    <h2 id="resultat"></h2>
+
+    <script>
+        const conversions = {
+            distance: {
+                'nm': 1e-9,   // nanomètre
+                'µm': 1e-6,   // micromètre
+                'mm': 1e-3,   // millimètre
+                'cm': 1e-2,   // centimètre
+                'dm': 1e-1,   // décimètre
+                'm': 1,       // mètre
+                'dam': 1e1,   // décamètre
+                'hm': 1e2,    // hectomètre
+                'km': 1e3,    // kilomètre
+                'Mm': 1e6,    // mégamètre
+                'Gm': 1e9     // gigamètre
+            },
+            poids: {
+                'ng': 1e-9,   // nanogramme
+                'µg': 1e-6,   // microgramme
+                'mg': 1e-3,   // milligramme
+                'g': 1,       // gramme
+                'kg': 1e3,    // kilogramme
+                't': 1e6,     // tonne
+                'Mg': 1e6,    // mégagramme
+                'Gg': 1e9     // gigagramme
+            },
+            volume: {
+                'nL': 1e-9,   // nanolitre
+                'µL': 1e-6,   // microlitre
+                'mL': 1e-3,   // millilitre
+                'L': 1,       // litre
+                'm³': 1e3,    // mètre cube
+                'dL': 1e-1,   // décilitre
+                'daL': 1e1,   // décalitre
+                'hL': 1e2,    // hectolitre
+                'kL': 1e3,    // kilolitre
+            }
+        };
+
+        function changerUnites() {
+            const categorie = document.getElementById("categorie").value;
+            const uniteSource = document.getElementById("uniteSource");
+            const uniteCible = document.getElementById("uniteCible");
+
+            uniteSource.innerHTML = '';
+            uniteCible.innerHTML = '';
+
+            for (const [unite] of Object.entries(conversions[categorie])) {
+                uniteSource.innerHTML += `<option value="${unite}">${unite}</option>`;
+                uniteCible.innerHTML += `<option value="${unite}">${unite}</option>`;
+            }
+        }
+
+        function convertir() {
+            const valeur = parseFloat(document.getElementById("valeur").value);
+            const uniteSource = document.getElementById("uniteSource").value;
+            const uniteCible = document.getElementById("uniteCible").value;
+            const categorie = document.getElementById("categorie").value;
+
+            if (isNaN(valeur)) {
+                document.getElementById("resultat").innerText = "Veuillez entrer une valeur valide.";
+                return;
+            }
+
+            const valeurEnBase = valeur * conversions[categorie][uniteSource];
+            const resultat = valeurEnBase / conversions[categorie][uniteCible];
+            document.getElementById("resultat").innerText = `${valeur} ${uniteSource} = ${resultat} ${uniteCible}`;
+        }
+
+        // Initialiser les unités lors du chargement
+        changerUnites();
+    </script>
+</body>
+</html>
