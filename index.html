@@ -144,9 +144,10 @@
             const resultat = valeurEnBase / conversions[categorie][uniteCible];
 
             // Calculer l'exposant et la valeur
-            const exposant = Math.floor(Math.log10(resultat));
+            const exposant = Math.floor(Math.log10(Math.abs(resultat)));
             const valeurFinale = resultat / Math.pow(10, exposant);
 
+            // Formater le résultat en fonction de l'exposant
             document.getElementById("resultat").innerHTML = `${valeur} ${uniteSource} = ${valeurFinale.toFixed(2)} × 10<sup>${exposant}</sup> ${uniteCible}`;
         }
 
