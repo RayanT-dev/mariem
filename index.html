@@ -142,7 +142,12 @@
 
             const valeurEnBase = valeur * conversions[categorie][uniteSource];
             const resultat = valeurEnBase / conversions[categorie][uniteCible];
-            document.getElementById("resultat").innerText = `${valeur} ${uniteSource} = ${resultat} ${uniteCible}`;
+
+            // Calculer l'exposant et la valeur
+            const exposant = Math.floor(Math.log10(resultat));
+            const valeurFinale = resultat / Math.pow(10, exposant);
+
+            document.getElementById("resultat").innerHTML = `${valeur} ${uniteSource} = ${valeurFinale.toFixed(2)} × 10<sup>${exposant}</sup> ${uniteCible}`;
         }
 
         // Initialiser les unités lors du chargement
